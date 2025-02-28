@@ -79,3 +79,7 @@
 .custom-select select option:hover {
   background-color: #6556cd; /* Blue background on hover */
 }
+
+body {
+  background-color: #1f1e24;
+}

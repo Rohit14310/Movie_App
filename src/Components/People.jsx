@@ -1,31 +1,24 @@
 import React, { useEffect, useState } from "react";
 import Topnav from "./partials/Topnav";
-import DropDown from "./partials/DropDown";
 import { useNavigate } from "react-router-dom";
 import axios from "../utils/Axios";
 import Loading from "../Components/Loading";
 import Cards from "./partials/Cards";
 import InfiniteScroll from "react-infinite-scroll-component";
 
-function Trending() {
+function People() {
   const navigate = useNavigate();
-  const [category, setcategory] = useState("all");
-  const [duration, setduration] = useState("day");
-  const [trending, settrending] = useState([]);
+  const [category, setcategory] = useState("popular");
+  const [people, setpeople] = useState([]);
   const [page, setpage] = useState(1);
   const [hasmore, sethasmore] = useState(true);
 
-  document.title = "MovieApp | Trending" + category.toUpperCase();
-
-  const GetTrending = async () => {
+  document.title = "MovieApp | people" + category.toUpperCase();
+  const Getpeople = async () => {
     try {
-      const { data } = await axios.get(
-        `/trending/${category}/${duration}?page=${page}`
-      );
-      // console.log(data.results);
-      // settrending(data.results);
+      const { data } = await axios.get(`/person/${category}?page=${page}`);
       if (data.results.length > 0) {
-        settrending((prev) => [...prev, ...data.results]);
+        setpeople((prev) => [...prev, ...data.results]);
         setpage((prev) => prev + 1);
       } else {
         sethasmore(false);
@@ -36,21 +29,21 @@ function Trending() {
   };
 
   const refreshHandler = () => {
-    if (trending.length === 0) {
-      GetTrending();
+    if (people.length === 0) {
+      Getpeople();
     } else {
       setpage(1);
-      settrending([]);
-      GetTrending();
+      setpeople([]);
+      Getpeople();
     }
   };
 
   useEffect(() => {
-    // GetTrending();
+    // Getpeople();
     refreshHandler();
-  }, [category, duration]);
+  }, [category]);
 
-  return trending.length > 0 ? (
+  return people.length > 0 ? (
     <div className="px-6 w-screen h-screen">
       <div className="w-full flex items-center justify-between ">
         <h1 className="text-2xl font-semibold text-zinc-400">
@@ -58,34 +51,24 @@ function Trending() {
             onClick={() => navigate(-1)}
             className="hover:text-[#6556CD] ri-arrow-left-line p-3"
           ></i>
-          Trending{" "}
+          people{" "}
           <small className="ml-1 text-sm text-zinc-500">
             ({category.toUpperCase()})
           </small>
         </h1>
         <div className="flex items-center w-[80%]">
           <Topnav />
-          <DropDown
-            title="Category"
-            options={["movie", "tv", "all"]}
-            func={(e) => setcategory(e.target.value)}
-          />
           <div className="w-[2%]"></div>
-          <DropDown
-            title="Duration"
-            options={["week", "day"]}
-            func={(e) => setduration(e.target.value)}
-          />
         </div>
       </div>
       <InfiniteScroll
-        dataLength={trending.length}
-        next={GetTrending}
+        dataLength={people.length}
+        next={Getpeople}
         hasMore={true}
         loader={<h1 className="text-white">Loading ...</h1>}
       >
         <div className="w-full">
-          <Cards data={trending} title="tv" />
+          <Cards data={people} title="people" />
         </div>
       </InfiniteScroll>
     </div>
@@ -94,4 +77,4 @@ function Trending() {
   );
 }
 
-export default Trending;
+export default People;

@@ -3,6 +3,15 @@ import "./App.css";
 import Home from "./Components/Home";
 import Loading from "./Components/Loading";
 import Trending from "./Components/Trending";
+import Popular from "./Components/Popular";
+import Movie from "./Components/Movie";
+import Tvshows from "./Components/Tvshows";
+import People from "./Components/People";
+import MovieDetails from "./Components/MovieDetails";
+import TvDetails from "./Components/TvDetails";
+import PersonDetails from "./Components/PersonDetails";
+import Trailer from "./Components/partials/Trailer";
+import NotFound from "./Components/NotFound";
 
 function App() {
   return (
@@ -12,6 +21,18 @@ function App() {
           <Route path="/" element={<Home />}></Route>
           {/* <Route path="/loading" element={<Loading />}></Route> */}
           <Route path="/trending" element={<Trending />}></Route>
+          <Route path="/popular" element={<Popular />}></Route>
+          <Route path="/movie" element={<Movie />}></Route>
+          <Route path="/movie/details/:id" element={<MovieDetails />}>
+            <Route path="/movie/details/:id/trailer" element={<Trailer />} />
+          </Route>
+          <Route path="/tv" element={<Tvshows />}></Route>
+          <Route path="/tv/details/:id" element={<TvDetails />}>
+            <Route path="/tv/details/:id/trailer" element={<Trailer />} />
+          </Route>
+          <Route path="/people" element={<People />}></Route>
+          <Route path="/people/details/:id" element={<PersonDetails />}></Route>
+          <Route path="*" element={<NotFound />}></Route>
         </Routes>
       </div>
     </>

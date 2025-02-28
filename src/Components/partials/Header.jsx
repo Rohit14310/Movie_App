@@ -16,14 +16,14 @@ function Header({ data }) {
         backgroundSize: "cover",
         backgroundRepeat: "no-repeat",
       }}
-      className="w-full h-[60vh] flex flex-col justify-end p-[6.5%] items-start"
+      className="w-full h-auto flex flex-col justify-end p-[6.5%] items-start"
     >
       {/* Title */}
       <motion.h1
         initial={{ opacity: 0, x: -50 }}
         animate={{ opacity: 1, x: 0 }}
         transition={{ delay: 0.3, duration: 0.5 }}
-        className="w-[70%] text-5xl font-black text-white"
+        className="w-auto text-5xl font-black text-white mb-2"
       >
         {data.original_title || data.title || data.name || data.original_name}
       </motion.h1>
@@ -37,7 +37,7 @@ function Header({ data }) {
       >
         {data.overview.slice(0, 260)}...
         <Link
-          to="#"
+          to={`/${data.media_type}/details/${data.id}`}
           className="text-blue-400 hover:text-blue-300 transition duration-300"
         >
           more
@@ -68,7 +68,7 @@ function Header({ data }) {
         transition={{ delay: 0.9, duration: 0.5 }}
       >
         <Link
-          to="#"
+          to={`/${data.media_type}/details/${data.id}/trailer`}
           className="bg-[#6556CD] p-4 rounded text-white mt-4 inline-block hover:bg-[#7c6ce6] transition duration-300"
         >
           Watch Trailer

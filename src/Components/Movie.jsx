@@ -7,25 +7,20 @@ import Loading from "../Components/Loading";
 import Cards from "./partials/Cards";
 import InfiniteScroll from "react-infinite-scroll-component";
 
-function Trending() {
+function Movie() {
   const navigate = useNavigate();
-  const [category, setcategory] = useState("all");
-  const [duration, setduration] = useState("day");
-  const [trending, settrending] = useState([]);
+  const [category, setcategory] = useState("now_playing");
+  const [Movie, setMovie] = useState([]);
   const [page, setpage] = useState(1);
   const [hasmore, sethasmore] = useState(true);
 
-  document.title = "MovieApp | Trending" + category.toUpperCase();
+  document.title = "MovieApp | Movie" + category.toUpperCase();
 
-  const GetTrending = async () => {
+  const GetMovie = async () => {
     try {
-      const { data } = await axios.get(
-        `/trending/${category}/${duration}?page=${page}`
-      );
-      // console.log(data.results);
-      // settrending(data.results);
+      const { data } = await axios.get(`/movie/${category}?page=${page}`);
       if (data.results.length > 0) {
-        settrending((prev) => [...prev, ...data.results]);
+        setMovie((prev) => [...prev, ...data.results]);
         setpage((prev) => prev + 1);
       } else {
         sethasmore(false);
@@ -36,21 +31,21 @@ function Trending() {
   };
 
   const refreshHandler = () => {
-    if (trending.length === 0) {
-      GetTrending();
+    if (Movie.length === 0) {
+      GetMovie();
     } else {
       setpage(1);
-      settrending([]);
-      GetTrending();
+      setMovie([]);
+      GetMovie();
     }
   };
 
   useEffect(() => {
-    // GetTrending();
+    // Getpopular();
     refreshHandler();
-  }, [category, duration]);
+  }, [category]);
 
-  return trending.length > 0 ? (
+  return Movie.length > 0 ? (
     <div className="px-6 w-screen h-screen">
       <div className="w-full flex items-center justify-between ">
         <h1 className="text-2xl font-semibold text-zinc-400">
@@ -58,7 +53,7 @@ function Trending() {
             onClick={() => navigate(-1)}
             className="hover:text-[#6556CD] ri-arrow-left-line p-3"
           ></i>
-          Trending{" "}
+          Movie{" "}
           <small className="ml-1 text-sm text-zinc-500">
             ({category.toUpperCase()})
           </small>
@@ -67,25 +62,20 @@ function Trending() {
           <Topnav />
           <DropDown
             title="Category"
-            options={["movie", "tv", "all"]}
+            options={["popular", "top_rated", "upcoming"]}
             func={(e) => setcategory(e.target.value)}
           />
           <div className="w-[2%]"></div>
-          <DropDown
-            title="Duration"
-            options={["week", "day"]}
-            func={(e) => setduration(e.target.value)}
-          />
         </div>
       </div>
       <InfiniteScroll
-        dataLength={trending.length}
-        next={GetTrending}
+        dataLength={Movie.length}
+        next={GetMovie}
         hasMore={true}
         loader={<h1 className="text-white">Loading ...</h1>}
       >
         <div className="w-full">
-          <Cards data={trending} title="tv" />
+          <Cards data={Movie} title="movie" />
         </div>
       </InfiniteScroll>
     </div>
@@ -94,4 +84,4 @@ function Trending() {
   );
 }
 
-export default Trending;
+export default Movie;

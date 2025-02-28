@@ -13,11 +13,11 @@ function Home() {
   const [wallpaper, setwallpaper] = useState(null);
   const [trending, settrending] = useState(null);
   const [category, setcategory] = useState("all");
+  const [people, setpeople] = useState([]);
 
   const GetHeaderWallpaper = async () => {
     try {
       const { data } = await axios.get(`/trending/all/day`);
-      // console.log(data);
       let randomdata =
         data.results[(Math.random() * data.results.length).toFixed()];
       setwallpaper(randomdata);
@@ -33,17 +33,25 @@ function Home() {
   const GetTrending = async () => {
     try {
       const { data } = await axios.get(`/trending/${category}/day`);
-      // console.log(data);
       settrending(data.results);
     } catch (err) {
       console.log("error is ", err);
     }
   };
 
+  const GetPeople = async () => {
+    try {
+      const { data } = await axios.get(`/person/popular`);
+      setpeople(data.results);
+    } catch (err) {
+      console.log("error fetching people is ", err);
+    }
+  };
+
   useEffect(() => {
     GetTrending();
+    GetPeople();
     !wallpaper && GetHeaderWallpaper();
-    // !trending && GetTrending();
   }, [category]);
 
   return wallpaper && trending ? (
@@ -62,6 +70,10 @@ function Home() {
           />
         </div>
         <HorizontalCards data={trending} />
+        <div className="flex justify-between p-4 pb-0 pt-8">
+          <h1 className="text-3xl font-bold text-white">🌟 Popular People</h1>
+        </div>
+        <HorizontalCards data={people} isPeople={true} />
       </div>
     </>
   ) : (
