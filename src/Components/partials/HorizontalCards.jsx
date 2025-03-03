@@ -16,7 +16,11 @@ function HorizontalCards({ data = [], isPeople = false }) {
       >
         {data.map((d, i) => (
           <Link
-            to={`/${d.media_type}/details/${d.id}`}
+            to={
+              isPeople
+                ? `/people/details/${d.id}`
+                : `/${d.media_type}/details/${d.id}`
+            }
             key={i}
             className="min-w-[25%] bg-zinc-900 rounded-lg overflow-hidden shadow-lg relative cursor-pointer"
             transition={{ duration: 0.3 }}
