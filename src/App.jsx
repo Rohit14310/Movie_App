@@ -12,6 +12,8 @@ import TvDetails from "./Components/TvDetails";
 import PersonDetails from "./Components/PersonDetails";
 import Trailer from "./Components/partials/Trailer";
 import NotFound from "./Components/NotFound";
+import AboutUs from "./Components/AboutUs";
+import ContactUs from "./Components/ContactUs ";
 
 function App() {
   return (
@@ -33,6 +35,8 @@ function App() {
           <Route path="/people" element={<People />}></Route>
           <Route path="/people/details/:id" element={<PersonDetails />}></Route>
           <Route path="*" element={<NotFound />}></Route>
+          <Route path="/aboutus" element={<AboutUs />}></Route>
+          <Route path="/contactus" element={<ContactUs />}></Route>
         </Routes>
       </div>
     </>
